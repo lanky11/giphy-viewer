@@ -1,6 +1,6 @@
 
 // Array to hold buttons
-var gifArray = ["frog", "fish", "dog", "cat"];
+var gifArray = ["lebron james", "kobe bryant", "nolan ryan", "tom brady", "wayne gretzky"];
 
 
 // Adding and updating gif buttons
@@ -19,7 +19,7 @@ function createButton() {
     
     // create button, add text, a class, an attrabute and append to div
     var gifButton = $("<button>").text(gifArray[j]);
-    gifButton.addClass("btn btn-success m-1");
+    gifButton.addClass("btn btn-success m-1 gif");
     gifButton.attr("data-button", gifArray[j]);
     $(".gif-button-display").append(gifButton);
   }
@@ -49,19 +49,17 @@ $(".submit-gif").on("click", function(event) {
 createButton();
 
 
-// Display Gifs
+// Display gifs when a gif button is clicked
 //==================================================================================================
 
-// On click fuction that displays the gifs depending on the button that is clicked
-$(".gif-display").on("click", function(event) {
+function displayGifs() {
   
   var searchTerm = $(this).attr("data-button");
-  console.log(searchTerm);
   
-  var apiKey = "mJ6YiwAKwAYk4h496ybr2uLF4xCC5tSK";
+  var apiKey = "&api_key=" + "mJ6YiwAKwAYk4h496ybr2uLF4xCC5tSK";
    
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + "dog" +  "&api_key=" + apiKey;
-
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + apiKey;
+  
 
   // Query GIPHY API
   $.ajax({
@@ -70,20 +68,31 @@ $(".gif-display").on("click", function(event) {
   }).done(function(response) {
     console.log(response);
     
-  // Loop through the results of the response and return gifs
-  for(var i=0; i<response.data.length; i++) {
-      console.log(response.data[i].url);
-      var imageDiv = $("<div>");
-      imageDiv.html("<img>").attr("src", response.data[i].url);
+    // Loop through the results of the response and return gifs
+    for(var i=0; i<response.data.length; i++) {
+
+      // created div to hold gif and rating
+      var gifDiv = $("<div>");
+      // add class to div
+      gifDiv.addClass("gif-div");
+      // created rating
+      var rating = $("<p>").text("Rating: " + response.data[i].rating);
+      // created img to hold gif and added a src
+      var image = $("<img>").attr("src", response.data[i].images.fixed_height.url);
+      // add image and rating to new div
+      gifDiv.append(image, rating);
+      // add div to page
+      $(".gif-display").prepend(gifDiv);
       
-  }
+    }
     
   });
   
-  
-});
+}
 
 
+// On click fuction that displays the gifs depending on the button that is clicked
+$(document).on("click", ".gif", displayGifs);
 
 
 
