@@ -83,14 +83,19 @@ function displayGifs() {
       gifDiv.addClass("gif-div");
       // created rating
       var rating = $("<p>").text("Rating: " + response.data[i].rating);
-      
-      
-      // created img tag to hold gif and added a src
-      var image = $("<img>").attr("src", response.data[i].images.fixed_height.url);
+      // created img tag to hold still of gif and added a src
+      var image = $("<img>").attr("src", response.data[i].images.fixed_height_still.url);
+      // add class to image
+      image.addClass("gif-img")
+      // add data attributes to image tag
+      image.attr("data-state", "still");
+      image.attr("data-still", response.data[i].images.fixed_height_still.url);
+      image.attr("data-animate", response.data[i].images.fixed_height.url);
       // add image and rating to new div
       gifDiv.append(image, rating);
       // add div to page
       $(".gif-display").prepend(gifDiv);
+
       
     }
     
@@ -99,7 +104,31 @@ function displayGifs() {
 }
 
 
-// On click fuction that displays the gifs depending on the button that is clicked
+// function that will pause or play a gif
+//==================================================================================================
+
+function pausePlay() {
+  
+  var state = $(this).attr("data-state");
+  console.log(this);
+  console.log($(this).attr("data-state"));
+  
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+
+}
+  
+// Pause or Play gif
+$(document).on("click", ".gif-img", pausePlay);
+
+
+
+// Displays the gifs depending on the button that is clicked
 $(document).on("click", ".gif", displayGifs);
 
 
