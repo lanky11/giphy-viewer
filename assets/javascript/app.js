@@ -1,16 +1,16 @@
 
 // Array to hold buttons
-var gifArray = ["lebron james", "kobe bryant", "nolan ryan", "tom brady", "wayne gretzky"];
-
-
-// Adding and updating gif buttons
 //==================================================================================================
 
-// Creates a gif button
+var gifArray = ["lebron james", "kobe bryant", "charles barkley", "david robinson", "hakeem olajuwon", "james harden", "russell westbrook"];
+
+
+// Create a gif button
+//==================================================================================================
+
 function createButton() {
   
   // remove gifs from page
-  $(".gif-display").empty();
   $(".gif-button-display").empty();
   
   // Loop to create buttons
@@ -25,7 +25,10 @@ function createButton() {
   }
 }
 
-// On click event to add new button to favorite gif buttons
+
+// Add new button to favorite gif buttons
+//==================================================================================================
+
 $(".submit-gif").on("click", function(event) {
    
   event.preventDefault();
@@ -54,6 +57,9 @@ createButton();
 
 function displayGifs() {
   
+  // clear gifs from last button click
+  $(".gif-display").empty();
+  
   var searchTerm = $(this).attr("data-button");
   
   var apiKey = "&api_key=" + "mJ6YiwAKwAYk4h496ybr2uLF4xCC5tSK";
@@ -77,7 +83,9 @@ function displayGifs() {
       gifDiv.addClass("gif-div");
       // created rating
       var rating = $("<p>").text("Rating: " + response.data[i].rating);
-      // created img to hold gif and added a src
+      
+      
+      // created img tag to hold gif and added a src
       var image = $("<img>").attr("src", response.data[i].images.fixed_height.url);
       // add image and rating to new div
       gifDiv.append(image, rating);
