@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>GIPHY Viewer</title>
+    <title>GIF Viewer</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,16 +13,23 @@
   <body>
     
     <div class="container">
-      <h1>GIPHY Viewer</h1>
       
-      <!-- Form for adding buttons -->
-      <form class="mb-3">
-        <div class="form-group">
-          <label for="gif-search">Add Gif Button</label>
-          <input class="form-control search-input" type="text" placeholder="Michael Jordan">
+      <div class="jumbotron mt-3">
+        <div class="container">
+          <h1 class="display-3 text-center font-weight-bold">GIF Viewer</h1>
+          <p class="lead">Don’t see a button you like.  Just add one and enjoy all the gif awesomeness!</p>
+          
+          <!-- Form for adding buttons -->
+          <form>
+            <div class="form-group">
+              <label for="gif-search">Add Gif Button</label>
+              <input class="form-control search-input" type="text" placeholder="Michael Jordan">
+            </div>
+            <button type="submit" class="btn btn-primary submit-gif">Add Button</button>
+          </form>
         </div>
-        <button type="submit" class="btn btn-primary submit-gif">Add Button</button>
-      </form>
+      </div>
+      
       
       <!-- The Div that will display the buttons -->
       <div class="favorite-gifs">

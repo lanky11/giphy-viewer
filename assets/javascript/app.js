@@ -1,9 +1,7 @@
-
 // Array to hold buttons
 //==================================================================================================
 
-var gifArray = ["lebron james", "kobe bryant", "charles barkley", "david robinson", "hakeem olajuwon", "james harden", "russell westbrook"];
-
+var gifArray = ["lebron james", "kobe bryant", "cat", "dog"];
 
 // Create a gif button
 //==================================================================================================
@@ -15,42 +13,46 @@ function createButton() {
   
   // Loop to create buttons
   for(var j=0; j<gifArray.length; j++) {
-    console.log(gifArray[j]);
     
     // create button, add text, a class, an attrabute and append to div
-    var gifButton = $("<button>").text(gifArray[j]);
+    var gifButton = $("<button>")
+    gifButton.text(gifArray[j]);
     gifButton.addClass("btn btn-success m-1 gif");
     gifButton.attr("data-button", gifArray[j]);
     $(".gif-button-display").append(gifButton);
   }
 }
 
-
 // Add new button to favorite gif buttons
 //==================================================================================================
 
-$(".submit-gif").on("click", function(event) {
+function submitGifButton (event) {
    
   event.preventDefault();
   
-  var searchTerm = $(".search-input").val().trim();
+  var searchTerm = $(".search-input").val().trim().toLowerCase();
   console.log(searchTerm);
   
   // Validate that the user enters a non empty string.
   if (searchTerm == "") {
     alert("Please enter a valid search term.");
   } else {
-    // push the input from the input field into the gif array
-    gifArray.push(searchTerm);
-    console.log(gifArray);
-    // call function to generate button
-    createButton();
+    // validates if the vlaue entered doesnt already exist
+    if (gifArray.indexOf(searchTerm) === -1) {
+      // push the input from the input field into the gif array
+      gifArray.push(searchTerm);
+      console.log(gifArray);
+      // call function to generate button
+      createButton();
+    } else {
+      alert(searchTerm + " is already a button in your favorites.  Please try something new!");
+    }
   }
-});
+  
+  // Clears button after submit
+  $(".search-input").val("");
 
-// call function to generate inital buttons
-createButton();
-
+}
 
 // Display gifs when a gif button is clicked
 //==================================================================================================
@@ -66,7 +68,6 @@ function displayGifs() {
    
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + apiKey;
   
-
   // Query GIPHY API
   $.ajax({
     url: queryURL,
@@ -81,12 +82,13 @@ function displayGifs() {
       var gifDiv = $("<div>");
       // add class to div
       gifDiv.addClass("gif-div");
-      // created rating
+      // created rating paragraph
       var rating = $("<p>").text("Rating: " + response.data[i].rating);
+      rating.addClass("rating-p text-center");
       // created img tag to hold still of gif and added a src
       var image = $("<img>").attr("src", response.data[i].images.fixed_height_still.url);
       // add class to image
-      image.addClass("gif-img")
+      image.addClass("gif-img");
       // add data attributes to image tag
       image.attr("data-state", "still");
       image.attr("data-still", response.data[i].images.fixed_height_still.url);
@@ -95,12 +97,8 @@ function displayGifs() {
       gifDiv.append(image, rating);
       // add div to page
       $(".gif-display").prepend(gifDiv);
-
-      
     }
-    
   });
-  
 }
 
 
@@ -111,7 +109,7 @@ function pausePlay() {
   
   var state = $(this).attr("data-state");
   console.log(this);
-  console.log($(this).attr("data-state"));
+  console.log(state);
   
   if (state === "still") {
     $(this).attr("src", $(this).attr("data-animate"));
@@ -120,19 +118,21 @@ function pausePlay() {
     $(this).attr("src", $(this).attr("data-still"));
     $(this).attr("data-state", "still");
   }
-
 }
-  
+
+// Function call and click events
+//==================================================================================================
+
+// call function to generate inital buttons
+createButton();
+
 // Pause or Play gif
 $(document).on("click", ".gif-img", pausePlay);
-
-
 
 // Displays the gifs depending on the button that is clicked
 $(document).on("click", ".gif", displayGifs);
 
-
-
+// Add gif to list of buttons
+$(".submit-gif").on("click", submitGifButton);
 
 //==================================================================================================
-
