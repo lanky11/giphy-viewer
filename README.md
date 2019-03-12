@@ -1,5 +1,7 @@
 # giphy-viewer
 
-Homework #6
+[Deployed App](https://leifswenson.github.io/giphy-viewer/index.html)
 
-Due 1/8/2017
+
+### Description
+An app that allows you to search for your favorite gifs.
